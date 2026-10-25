@@ -1,0 +1,32 @@
+{
+  "asyncapi": "2.6.0",
+  "channels": {
+    "/stream-input": {
+      "bindings": {"ws": {"query": {"type": "object", "properties": {"api_key": {}, "model": {}, "sample_rate": {}}}}},
+      "publish": {"message": {"payload": {"$ref": "#/components/schemas/Subscribe"}}},
+      "subscribe": {"message": {"payload": {"$ref": "#/components/schemas/Publish"}}}
+    },
+    "/v1/transcription/stream-input": {
+      "bindings": {"ws": {"query": {"type": "object", "properties": {"api_key": {}, "language": {}}}}},
+      "publish": {"message": {"payload": {"oneOf": [{"$ref": "#/components/schemas/Partial"}]}}}
+    }
+  },
+  "components": {
+    "schemas": {
+      "Publish": {"oneOf": [{"$ref": "#/components/schemas/sendText"}]},
+      "Subscribe": {"oneOf": [{"$ref": "#/components/schemas/wordTimestamp"}, {"$ref": "#/components/schemas/errorOutput"}]},
+      "sendText": {
+        "type": "object",
+        "properties": {
+          "text": {"type": "string"},
+          "context_id": {"type": "string"},
+          "voice_config": {"anyOf": [{"$ref": "#/components/schemas/VoiceConfig"}, {"type": "null"}]}
+        }
+      },
+      "VoiceConfig": {"type": "object", "properties": {"voice_id": {}, "volumeOffset": {}}},
+      "wordTimestamp": {"type": "object", "properties": {"word": {}, "endMs": {}}},
+      "errorOutput": {"type": "object", "properties": {"error": {}}},
+      "Partial": {"type": "object", "properties": {"text": {}}}
+    }
+  }
+}

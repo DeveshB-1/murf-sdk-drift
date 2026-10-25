@@ -1,0 +1,30 @@
+{
+  "openapi": "3.1.0",
+  "paths": {
+    "/v1/speech/stream": {
+      "post": {
+        "parameters": [{"name": "token", "in": "header"}, {"name": "api-key", "in": "header"}],
+        "requestBody": {"content": {"application/json": {"schema": {"$ref": "#/components/schemas/StreamBody"}}}}
+      }
+    },
+    "/v1/speech/voices": {
+      "get": {"parameters": [{"name": "model", "in": "query"}, {"name": "token", "in": "header"}, {"name": "api-key", "in": "header"}]}
+    },
+    "/v1/speech/voices/cloned/{voiceId}": {
+      "delete": {"parameters": [{"name": "voiceId", "in": "path"}, {"name": "api-key", "in": "header"}]}
+    },
+    "/v1/speech/voices/create": {
+      "post": {"requestBody": {"content": {"multipart/form-data": {"schema": {"type": "object", "properties": {"file": {}, "name": {}}}}}}}
+    }
+  },
+  "components": {
+    "schemas": {
+      "StreamBody": {
+        "allOf": [
+          {"type": "object", "required": ["text", "voiceId"], "properties": {"text": {"type": "string"}, "voiceId": {"type": "string"}}},
+          {"type": "object", "properties": {"rate": {"type": "integer"}, "volumeOffset": {"type": "integer"}}}
+        ]
+      }
+    }
+  }
+}

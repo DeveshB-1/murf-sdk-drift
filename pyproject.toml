@@ -1,0 +1,26 @@
+[project]
+name = "murf-sdk-drift"
+version = "0.1.0"
+description = "Checks whether the Murf Python SDK still covers Murf's published OpenAPI and AsyncAPI specs"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+murf = ["murf"]
+
+[project.scripts]
+murf-drift = "murf_drift.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["murf_drift"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
